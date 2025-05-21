@@ -134,16 +134,16 @@ go mod tidy
 go run main.go
 ```
 
-###🐳 Run with Docker
+##🐳 Run with Docker
 
 ```
-### 3️⃣ Build the image
+### 1️⃣ Build the image
 
 ```bash
 docker build -t coupon-system .
 ```
 
-### 3️⃣Run the container
+### 2️⃣Run the container
 ```bash
 docker run -d -p 8080:8080 --env-file .env coupon-system
 ```
