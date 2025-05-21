@@ -133,8 +133,8 @@ go mod tidy
 ```bash
 go run main.go
 ```
-
-###🐳 Run with Docker
+---
+##🐳 Run with Docker
 
 ### 1️⃣ Build the image
 
