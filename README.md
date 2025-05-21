@@ -4,6 +4,14 @@ A Go-based RESTful API service to manage discount coupons for an eCommerce or he
 
 ---
 
+## 🌐 Hosted URL
+
+Live Project: [https://coupon-system-farmako-assesment-golang-production.up.railway.app](https://coupon-system-farmako-assesment-golang-production.up.railway.app)  
+Swagger Docs: [https://coupon-system-farmako-assesment-golang-production.up.railway.app/swagger/index.html](https://coupon-system-farmako-assesment-golang-production.up.railway.app/swagger/index.html)
+
+---
+
+
 ## 📁 Project Structure
 
 ```
@@ -162,7 +170,12 @@ Then access via:
 `http://localhost:8080/swagger/index.html`
 
 ---
+Also Available at:
+---
 
+`https://coupon-system-farmako-assesment-golang-production.up.railway.app/swagger/index.html`
+
+---
 ## 🧠 Caching
 
 Validation responses are cached using `go-cache` with a default expiration time and automatic cleanup.  
@@ -170,9 +183,7 @@ This reduces DB hits and improves performance.
 
 ---
 
-## 🐳 Docker Support (Optional)
 
-You can containerize this app using a `Dockerfile` and `docker-compose.yml` for PostgreSQL.
 
 ---
 
