@@ -1,0 +1,265 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API documentation for Coupon System",
+        "title": "Coupon System API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api",
+    "paths": {
+        "/coupons": {
+            "get": {
+                "description": "Retrieve a list of all coupons",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coupons"
+                ],
+                "summary": "Get all coupons",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.CouponSwagger"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a coupon with necessary details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coupons"
+                ],
+                "summary": "Create a new coupon",
+                "parameters": [
+                    {
+                        "description": "Coupon Data",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Coupon"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.CouponSwagger"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupons/validate": {
+            "post": {
+                "description": "Checks if the coupon code is valid for the given total and time",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coupons"
+                ],
+                "summary": "Validate a coupon code",
+                "parameters": [
+                    {
+                        "description": "Coupon Validation Request",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ValidateCouponRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CouponValidationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Coupon": {
+            "type": "object"
+        },
+        "models.CouponSwagger": {
+            "type": "object",
+            "properties": {
+                "applicable_categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"category1\"",
+                        " \"category2\"]"
+                    ]
+                },
+                "applicable_medicine_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"med1\"",
+                        " \"med2\"]"
+                    ]
+                },
+                "coupon_code": {
+                    "type": "string",
+                    "example": "SAVE20"
+                },
+                "discount_type": {
+                    "type": "string",
+                    "example": "percentage"
+                },
+                "discount_value": {
+                    "type": "number",
+                    "example": 20
+                },
+                "expiry_date": {
+                    "type": "string",
+                    "example": "2025-12-31T23:59:59Z"
+                },
+                "max_usage_per_user": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "min_order_value": {
+                    "type": "number",
+                    "example": 50
+                },
+                "terms_and_conditions": {
+                    "type": "string",
+                    "example": "Use this coupon once per user."
+                },
+                "usage_type": {
+                    "type": "string",
+                    "example": "single_use"
+                },
+                "valid_time_window": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"09:00\"",
+                        " \"21:00\"]"
+                    ]
+                }
+            }
+        },
+        "models.CouponValidationResponse": {
+            "type": "object",
+            "properties": {
+                "discount": {
+                    "$ref": "#/definitions/models.Discount"
+                },
+                "is_valid": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Discount": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UsageType": {
+            "type": "string",
+            "enum": [
+                "one_time",
+                "multi_use",
+                "time_based"
+            ],
+            "x-enum-varnames": [
+                "OneTime",
+                "MultiUse",
+                "TimeBased"
+            ]
+        },
+        "models.ValidateCouponRequest": {
+            "type": "object",
+            "properties": {
+                "coupon_code": {
+                    "type": "string",
+                    "example": "SAVE20"
+                },
+                "time": {
+                    "description": "format HH:mm",
+                    "type": "string",
+                    "example": "14:30"
+                },
+                "total": {
+                    "type": "number",
+                    "example": 150.75
+                }
+            }
+        }
+    }
+}

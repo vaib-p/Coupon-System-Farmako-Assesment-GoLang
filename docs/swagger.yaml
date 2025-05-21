@@ -1,0 +1,180 @@
+basePath: /api
+definitions:
+  models.Coupon:
+    type: object
+  models.CouponSwagger:
+    properties:
+      applicable_categories:
+        example:
+        - '["category1"'
+        - ' "category2"]'
+        items:
+          type: string
+        type: array
+      applicable_medicine_ids:
+        example:
+        - '["med1"'
+        - ' "med2"]'
+        items:
+          type: string
+        type: array
+      coupon_code:
+        example: SAVE20
+        type: string
+      discount_type:
+        example: percentage
+        type: string
+      discount_value:
+        example: 20
+        type: number
+      expiry_date:
+        example: "2025-12-31T23:59:59Z"
+        type: string
+      max_usage_per_user:
+        example: 1
+        type: integer
+      min_order_value:
+        example: 50
+        type: number
+      terms_and_conditions:
+        example: Use this coupon once per user.
+        type: string
+      usage_type:
+        example: single_use
+        type: string
+      valid_time_window:
+        example:
+        - '["09:00"'
+        - ' "21:00"]'
+        items:
+          type: string
+        type: array
+    type: object
+  models.CouponValidationResponse:
+    properties:
+      discount:
+        $ref: '#/definitions/models.Discount'
+      is_valid:
+        type: boolean
+      message:
+        type: string
+      reason:
+        type: string
+    type: object
+  models.Discount:
+    properties:
+      type:
+        type: string
+      value:
+        type: number
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.UsageType:
+    enum:
+    - one_time
+    - multi_use
+    - time_based
+    type: string
+    x-enum-varnames:
+    - OneTime
+    - MultiUse
+    - TimeBased
+  models.ValidateCouponRequest:
+    properties:
+      coupon_code:
+        example: SAVE20
+        type: string
+      time:
+        description: format HH:mm
+        example: "14:30"
+        type: string
+      total:
+        example: 150.75
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API documentation for Coupon System
+  title: Coupon System API
+  version: "1.0"
+paths:
+  /coupons:
+    get:
+      description: Retrieve a list of all coupons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CouponSwagger'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all coupons
+      tags:
+      - coupons
+    post:
+      consumes:
+      - application/json
+      description: Create a coupon with necessary details
+      parameters:
+      - description: Coupon Data
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/models.Coupon'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CouponSwagger'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a new coupon
+      tags:
+      - coupons
+  /coupons/validate:
+    post:
+      consumes:
+      - application/json
+      description: Checks if the coupon code is valid for the given total and time
+      parameters:
+      - description: Coupon Validation Request
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/models.ValidateCouponRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CouponValidationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Validate a coupon code
+      tags:
+      - coupons
+swagger: "2.0"
